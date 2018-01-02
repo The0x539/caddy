@@ -23,6 +23,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -122,6 +123,33 @@ func (l Listing) Breadcrumbs() []Crumb {
 	}
 
 	return result
+}
+
+// HasItem returns whether the listing contains any
+// items with any of the given names.
+func (l Listing) HasItem(names ...string) bool {
+	for _, item := range l.Items {
+		for _, name := range names {
+			if item.Name == name {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// HasMatch returns whether the listing contains any
+// items with names matching any of the given patterns.
+func (l Listing) HasMatch(patterns ...string) bool {
+	for _, item := range l.Items {
+		for _, pattern := range patterns {
+			result, _ := regexp.MatchString(pattern, item.Name)
+			if result {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // FileInfo is the info about a particular file or directory
