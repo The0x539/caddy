@@ -198,6 +198,9 @@ func (l byNameDirFirst) Less(i, j int) bool {
 
 	// if both are dir or file sort normally
 	if l.Items[i].IsDir == l.Items[j].IsDir {
+		if strings.ToUpper(l.Items[i].Name) == "SHA256SUMS" {
+			return false
+		}
 		return strings.ToLower(l.Items[i].Name) < strings.ToLower(l.Items[j].Name)
 	}
 
